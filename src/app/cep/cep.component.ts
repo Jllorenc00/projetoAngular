@@ -1,39 +1,51 @@
 import { Component } from '@angular/core';
 import { CepService } from './cep.service';
-import { FormControl, FormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-cep',
   standalone: true,
   imports: [
-    FormsModule
+    FormsModule,    
+    ReactiveFormsModule
   ],
   templateUrl: './cep.component.html',
   styleUrl: './cep.component.css'
 })
 export class CepComponent {
+  private teste: any;
 
-  teste: any = 'ola mundo';
+  texto;
 
-  meutexto = 'ola, como voce vai, aqui vai o meu texto';
+  //cep
+  //logradouro
+  //localidade
+  //uf
+  //bairro
+  //complemento
+  formCep = new FormGroup({
+    cep: new FormControl<string>(''),    
+    logradouro: new FormControl<string>(''),
+    localidade: new FormControl<string>(''),
+    uf: new FormControl<string>(''),
+    bairro: new FormControl<string>(''),
+    numero: new FormControl<number>(0),
+    complemento: new FormControl<string>('')
+  });
 
-  campo1 : any;
   constructor(
     private cepService: CepService
   ){
-    this.campo1 = new FormControl('campo1');
+    this.texto = 'meu texto';
   }
 
-  public buscarCEP(){
-
-    this.cepService.consultaCep().then(r => {
-      let retorno: any = r;
-      console.log(r);
+  public buscaCep(){
+    this.cepService.consultaCep().then(data => {
+      let retorno: any = data;
+      console.log(data);
       alert(retorno.logradouro);
+      alert(retorno.cidade);
     });
-
-    
-
   }
 
 }
